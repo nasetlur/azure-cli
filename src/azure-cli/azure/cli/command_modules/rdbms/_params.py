@@ -128,3 +128,7 @@ def load_arguments(self, _):    # pylint: disable=too-many-statements
 
     with self.argument_context('mysql server replica list') as c:
         c.argument('server_name', options_list=['--server-name', '-s'], help='Name of the master server.')
+
+    #for scope in ['mysql get-access-token', 'postgres get-access-token']:
+    #    with self.argument_context(scope) as c:
+    #        c.argument('interactive', options_list=['-i'])

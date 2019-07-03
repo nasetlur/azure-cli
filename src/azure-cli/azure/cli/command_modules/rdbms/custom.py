@@ -5,6 +5,9 @@
 
 # pylint: disable=unused-argument, line-too-long
 
+import json
+from adal import AuthenticationContext
+from azure.cli.core._profile import _get_authorization_code
 from msrestazure.azure_exceptions import CloudError
 from msrestazure.tools import resource_id, is_valid_resource_id, parse_resource_id  # pylint: disable=import-error
 from azure.cli.core.commands.client_factory import get_subscription_id
@@ -12,6 +15,7 @@ from azure.cli.core.util import CLIError, sdk_no_wait
 from azure.mgmt.rdbms.mysql.operations.servers_operations import ServersOperations as MySqlServersOperations
 from azure.mgmt.rdbms.mariadb.operations.servers_operations import ServersOperations as MariaDBServersOperations
 from ._client_factory import get_mariadb_management_client, get_mysql_management_client, get_postgresql_management_client
+from azure.cli.core.util import get_file_json, in_cloud_console, open_page_in_browser, can_launch_browser
 
 SKU_TIER_MAP = {'Basic': 'b', 'GeneralPurpose': 'gp', 'MemoryOptimized': 'mo'}
 
@@ -405,3 +409,16 @@ def _server_list_custom_func(client, resource_group_name=None):
     if resource_group_name:
         return client.list_by_resource_group(resource_group_name)
     return client.list()
+
+def _get_access_token():
+    #result = _get_authorization_code("https://ossrdbms-aad.database.mscds.com", "https://login.windows-ppe.net/orcasAADTest.ccsctp.net")
+    result = _get_authorization_code("https://ossrdbms-aad.database.windows.net", "https://login.windows.net/orcasaad.onmicrosoft.com")
+    authority_url = "https://login.windows-ppe.net/orcasAADTest.ccsctp.net"
+    """context = AuthenticationContext(authority_url)
+    clientid = "3eb9a527-1b19-43e6-8a61-c944a5d13b32"
+    resource = "https://ossrdbms-aad.database.mscds.com"
+    token = context.acquire_token_with_username_password(resource, "cbrown@orcasaadtest.ccsctp.net", "Devtest900", clientid)
+    justToken = token["accessToken"]
+    print json.dumps(token, indent=2)
+    print justToken"""
+    print(result)
